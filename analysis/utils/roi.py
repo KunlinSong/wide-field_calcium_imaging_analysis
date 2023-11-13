@@ -77,25 +77,38 @@ class BoundPoints:
         """Get the number of points."""
         return len(self._points)
 
-    def save(self, dirname: str) -> None:
+    def save(self, path: str) -> None:
         """Save the bound points.
 
         Args:
             path: The path to save the bound points.
         """
-        FILENAME = "bound_points.csv"
         df = pd.DataFrame({"x": self.x, "y": self.y})
-        os.makedirs(dirname, exist_ok=True)
-        df.to_csv(os.path.join(dirname, FILENAME), index=False)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        df.to_csv(path, index=False)
 
 
 class Point:
+    """Point.
+
+    Attributes:
+        _x: The x coordinate.
+        _y: The y coordinate.
+    """
+
     def __init__(self, x: int, y: int) -> None:
+        """Initialize the point.
+
+        Args:
+            x (int): The x coordinate.
+            y (int): The y coordinate.
+        """
         self._x = x
         self._y = y
 
     @property
     def coordinate(self) -> tuple[int, int]:
+        """Get the coordinate."""
         return self._x, self._y
 
     def is_on_segment(self, point1: tuple[int, int], point2: tuple[int, int]) -> bool:

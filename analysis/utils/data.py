@@ -11,10 +11,23 @@ from tifffile import imread
 
 
 def get_data_file() -> str:
+    """Get the path of the data file.
+
+    Returns:
+        The path of the data file.
+    """
     return filedialog.askdirectory(title='Select a data file')
 
 
 class FramesInfo:
+    """The information of the frames.
+    
+    Attributes:
+        path: The path of the frames.
+        filename: The filename of the frames.
+        file_number: The file number of the frames.
+        info: The information of the frames.
+    """
     def __init__(self, path: str) -> None:
         self.path = path
         self.filename = os.path.basename(path)
@@ -159,7 +172,7 @@ class FrameTimes:
         self.frame_times = [self._trans_time(time) for time in frame_times]
     
     @staticmethod
-    def _trans_time(matlab_time: float) -> datetime:
+    def _trans_time(matlab_time: float) -> datetime.datetime:
         return (datetime.datetime.fromordinal(int(matlab_time)) 
                 + datetime.timedelta(days=matlab_time % 1) 
                 - datetime.timedelta(days = 366))
@@ -192,17 +205,24 @@ class UltraSoundStimLog:
         stim_len = len(self.COLS)
         stims = [cont[i:i+stim_len] for i in range(0, len(cont), stim_len)]
         return stims
-    
-    # TODO
-    def get_stim_lst(self, frame_times: FrameTimes) -> list[list[int, int]]:
-        pass
 
+    def get_stim_lst(self, frame_times: FrameTimes) -> list[list[int, int]]:
+        stim_frames_lst = []
+        for stim in self.stim_data:
+            stim_frames = []
+            for i, frame_time in enumerate(frame_times.frame_times):
+                if stim[0] <= frame_time <= stim[2]:
+                    stim_frames.append(i)
+                elif frame_time > stim[2]:
+                    break
+            stim_frames_lst.append([stim_frames_lst[0], stim_frames[-1]])
+        return stim_frames_lst
 
 class StimLog:
-    FILENAME = "stim_log.npy"
-    def __init__(self, stim_lst: list[list[int, int]]) -> None:
-        self.init_stim_log = stim_log.copy()
-        self.stim_log = stim_log.copy()
+    def __init__(self, stim_frames_lst: list[list[int, int]]) -> None:
+        self.init_stim_log = stim_frames_lst.copy()
+        self.stim_log = stim_frames_lst.copy()
+        self.stim_log.sort()
     
     def append(self, start: int, end: int) -> None:
         self.stim_log.append([start, end])
@@ -213,16 +233,20 @@ class StimLog:
     
     def clear(self) -> None:
         self.stim_log = self.init_stim_log.copy()
+        self.stim_log.sort()
     
     def reset(self) -> None:
         self.stim_log = self.init_stim_log.copy()
+        self.stim_log.sort()
     
-    def save(self, dirname: str) -> None:
-        os.makedirs(dirname, exist_ok=True)
+    def save(self, path: str) -> None:
+        os.makedirs(path, exist_ok=True)
         stim_log = np.array(self.stim_log)
-        np.save(os.path.join(dirname, self.FILENAME), stim_log)
+        stim_log = pd.DataFrame(stim_log, columns=['start', 'end'])
+        stim_log.to_csv(path, index=False)
+        
     
     @classmethod
     def load_from_file(cls, path: str) -> "StimLog":
-        stim_log = np.load(path)
+        stim_log = pd.read_csv(path).values
         return cls(stim_log.tolist())

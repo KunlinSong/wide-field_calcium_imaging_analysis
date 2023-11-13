@@ -4,6 +4,15 @@ import yaml
 
 
 class Anchor:
+    """Anchor points.
+
+    Attributes:
+        ob_left: The OB left point.
+        ob_center: The OB center point.
+        ob_right: The OB right point.
+        rsp_base: The RSP base point.
+        figsize: The figure size.
+    """
     FILENAME = "anchor.yaml"
     OB_LEFT = "OB Left"
     OB_CENTER = "OB Center"
@@ -18,6 +27,15 @@ class Anchor:
         rsp_base: tuple[int, int],
         figsize: tuple[int, int],
     ) -> None:
+        """Initialize the anchor points.
+
+        Args:
+            ob_left (tuple[int, int]): The OB left point.
+            ob_center (tuple[int, int]): The OB center point.
+            ob_right (tuple[int, int]): The OB right point.
+            rsp_base (tuple[int, int]): The RSP base point.
+            figsize (tuple[int, int]): The figure size.
+        """
         self.ob_left = ob_left
         self.ob_center = ob_center
         self.ob_right = ob_right
@@ -26,6 +44,11 @@ class Anchor:
 
     @property
     def content(self) -> dict[str, dict[str, tuple[int, int]]]:
+        """Get the content.
+
+        Returns:
+            The content of the anchor points.
+        """
         return {
             self.OB_LEFT: {"x": self.ob_left[0], "y": self.ob_left[1]},
             self.OB_CENTER: {"x": self.ob_center[0], "y": self.ob_center[1]},
