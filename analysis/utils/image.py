@@ -8,6 +8,14 @@ from typing import *
 import cv2
 import numpy as np
 
+__all__ = [
+    "ImagePerspectiveTransform",
+    "get_average_image",
+    "perspective",
+    "rotate",
+    "zoom",
+]
+
 
 def rotate(img: np.ndarray, angle: float, center: tuple[int, int]) -> np.ndarray:
     """Rotate an image.
@@ -31,7 +39,6 @@ def zoom(
     left: Union[int, float],
     right: Union[int, float],
     state: Literal["in", "out"],
-    position: Optional[tuple[int, int]] = None,
 ) -> tuple[float, float, float, float]:
     """Zoom an image.
 
@@ -40,7 +47,6 @@ def zoom(
         lower: The lower bound of the zoomed image.
         left: The left bound of the zoomed image.
         right: The right bound of the zoomed image.
-        position: The position of the zoomed image.
         state: The state of the zooming.
 
     Returns:
@@ -51,18 +57,13 @@ def zoom(
         factor = FACTOR
     elif state == "out":
         factor = -FACTOR
-    if position is None:
-        x = int((left + right) / 2)
-        y = int((upper + lower) / 2)
-    else:
-        x, y = position
 
-    new_bound = lambda bound, pos: bound - (bound - pos) * factor
+    new_bound = lambda bound: bound * (1 - factor)
     return (
-        new_bound(upper, y),
-        new_bound(lower, y),
-        new_bound(left, x),
-        new_bound(right, x),
+        new_bound(upper),
+        new_bound(lower),
+        new_bound(left),
+        new_bound(right),
     )
 
 
@@ -90,8 +91,8 @@ def perspective(
     return cv2.warpPerspective(img, mat, (w, h), flags=cv2.INTER_LINEAR)
 
 
-class ImagePerspective:
-    """Perspective an image.
+class ImagePerspectiveTransform:
+    """Perspective transform.
 
     Attributes:
         _fig_size: The size of the figure.

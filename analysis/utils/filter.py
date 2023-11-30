@@ -3,6 +3,8 @@ from typing import *
 import numpy as np
 from scipy import signal
 
+__all__ = ["LowPassFilter"]
+
 
 class LowPassFilter:
     """Low pass filter. The filter is applied along the first axis. The
@@ -16,18 +18,10 @@ class LowPassFilter:
 
     EPS = 1e-6
 
-    def __init__(self, sampling_rate: Union[int, float]) -> None:
-        """Initialize the filter.
-
-        Args:
-            sampling_rate: The sampling rate of the signal.
-        """
+    def __init__(self) -> None:
+        """Initialize the filter."""
         self._b, self._a = signal.butter(
-            N=4,
-            Wn=sampling_rate / 2 - self.EPS,
-            btype="lowpass",
-            output="ba",
-            fs=sampling_rate,
+            N=4, Wn=(1 - self.EPS), btype="lowpass", output="ba"
         )
 
     def __call__(self, x: np.ndarray) -> np.ndarray:

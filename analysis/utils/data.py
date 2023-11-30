@@ -9,25 +9,35 @@ import scipy.io as sio
 from skvideo.io import FFmpegReader
 from tifffile import imread
 
+__all__ = [
+    "BaselineInfo",
+    "CorrectedFrames",
+    "Frames",
+    "FrameTimes",
+    "StimLog",
+    "get_data_file",
+]
 
-def get_data_file() -> str:
-    """Get the path of the data file.
+
+def get_file() -> str:
+    """Get the path of the file.
 
     Returns:
-        The path of the data file.
+        The path of the file.
     """
-    return filedialog.askdirectory(title='Select a data file')
+    return os.path.abspath(filedialog.askdirectory(title="Select a file"))
 
 
 class FramesInfo:
     """The information of the frames.
-    
+
     Attributes:
         path: The path of the frames.
         filename: The filename of the frames.
         file_number: The file number of the frames.
         info: The information of the frames.
     """
+
     def __init__(self, path: str) -> None:
         self.path = path
         self.filename = os.path.basename(path)
@@ -82,7 +92,7 @@ class Frames(FramesInfo):
         try:
             super().__init__(path)
         except AssertionError:
-            print(f"Warning: Invalid filename: {path}")
+            print(f"Warning: Invalid Path: {path}")
         match self.extention:
             case ".dat":
                 self.data = self._load_dat()
@@ -128,10 +138,8 @@ class Frames(FramesInfo):
 
 
 class CorrectedFrames:
-    FILENAME = "corrected_frames.npy"
-
-    def __init__(self, dirname: str) -> None:
-        self._data = np.load(os.path.join(dirname, self.FILENAME))
+    def __init__(self, path: str) -> None:
+        self._data = np.load(path)
 
     @property
     def data(self) -> np.ndarray:
@@ -150,44 +158,56 @@ class CorrectedFrames:
         Returns:
             The corrected frames.
         """
-        corrected_frames = cls()
+        corrected_frames = object().__new__(cls)
         corrected_frames._data = data
         return corrected_frames
 
-    def save(self, dirname: str) -> None:
+    def save(self, path: str) -> None:
         """Save the corrected frames.
 
         Args:
             path: The path to save the corrected frames.
         """
-        os.makedirs(dirname, exist_ok=True)
-        np.save(os.path.join(dirname, self.FILENAME), self._data)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        np.save(path, self._data)
+
+    @property
+    def total_frames(self) -> int:
+        """The total number of frames.
+
+        Returns:
+            The total number of frames.
+        """
+        return self._data.shape[0]
 
 
 class FrameTimes:
-    KEY = 'frameTimes'
+    KEY = "frameTimes"
 
     def __init__(self, path: str) -> None:
         frame_times = sio.loadmat(path)[self.KEY].squeeze().tolist()
         self.frame_times = [self._trans_time(time) for time in frame_times]
-    
+
     @staticmethod
     def _trans_time(matlab_time: float) -> datetime.datetime:
-        return (datetime.datetime.fromordinal(int(matlab_time)) 
-                + datetime.timedelta(days=matlab_time % 1) 
-                - datetime.timedelta(days = 366))
+        return (
+            datetime.datetime.fromordinal(int(matlab_time))
+            + datetime.timedelta(days=matlab_time % 1)
+            - datetime.timedelta(days=366)
+        )
 
 
 class UltraSoundStimLog:
-    COLS = ['Begin', 'Params', 'End']
+    COLS = ["Begin", "Params", "End"]
+
     def __init__(self, path: str) -> None:
         self.path = path
         self.stim_data = self._get_stim_data()
 
     def _get_stim_data(self) -> list[list[datetime.datetime, str, datetime.datetime]]:
-        with open(self.path, 'r') as f:
+        with open(self.path, "r") as f:
             cont = f.readline()
-        cont = cont.strip('[]\n').split(',')
+        cont = cont.strip("[]\n").split(",")
         first_cont = cont[0].strip("'")
         sign = first_cont[-6]
         cont = [elem.strip("'") for elem in cont]
@@ -198,55 +218,132 @@ class UltraSoundStimLog:
             else:
                 elem_preprocessed = elem.rsplit(sign, 1)[0]
                 if i % 3 == 0:
-                    elem_preprocessed = elem_preprocessed.lstrip('begin:')
+                    elem_preprocessed = elem_preprocessed.lstrip("begin:")
                 elif i % 3 == 2:
-                    elem_preprocessed = elem_preprocessed.lstrip('end:')
-                df_cont.append(datetime.datetime.strptime(elem_preprocessed, '%Y-%m-%d %H:%M:%S.%f'))
+                    elem_preprocessed = elem_preprocessed.lstrip("end:")
+                df_cont.append(
+                    datetime.datetime.strptime(
+                        elem_preprocessed, "%Y-%m-%d %H:%M:%S.%f"
+                    )
+                )
         stim_len = len(self.COLS)
-        stims = [cont[i:i+stim_len] for i in range(0, len(cont), stim_len)]
+        stims = [cont[i : i + stim_len] for i in range(0, len(cont), stim_len)]
         return stims
 
     def get_stim_lst(self, frame_times: FrameTimes) -> list[list[int, int]]:
         stim_frames_lst = []
+        frame_times_lst = frame_times.frame_times
         for stim in self.stim_data:
-            stim_frames = []
-            for i, frame_time in enumerate(frame_times.frame_times):
-                if stim[0] <= frame_time <= stim[2]:
-                    stim_frames.append(i)
-                elif frame_time > stim[2]:
-                    break
-            stim_frames_lst.append([stim_frames_lst[0], stim_frames[-1]])
+            start_idx = self._binary_search(frame_times_lst, stim[0])
+            end_idx = self._binary_search(frame_times_lst, stim[2])
+            stim_frames_lst.append([start_idx, end_idx])
         return stim_frames_lst
 
+    @staticmethod
+    def _binary_search(arr: list[datetime.datetime], target: datetime.datetime) -> int:
+        low = 0
+        high = len(arr) - 1
+        while low <= high:
+            mid = (low + high) // 2
+            if arr[mid] == target:
+                return mid
+            elif arr[mid] < target:
+                low = mid + 1
+            else:
+                high = mid - 1
+        return low
+
+
 class StimLog:
-    def __init__(self, stim_frames_lst: list[list[int, int]]) -> None:
-        self.init_stim_log = stim_frames_lst.copy()
-        self.stim_log = stim_frames_lst.copy()
-        self.stim_log.sort()
-    
+    START_COLNAME = "Start"
+    END_COLNAME = "End"
+
+    def __init__(self) -> None:
+        self.stim_log = []
+
     def append(self, start: int, end: int) -> None:
         self.stim_log.append([start, end])
+        self.stim_log = list(set(self.stim_log))
         self.stim_log.sort()
-    
+
     def remove(self, idx: int) -> None:
         self.stim_log.pop(idx)
-    
+
     def clear(self) -> None:
-        self.stim_log = self.init_stim_log.copy()
-        self.stim_log.sort()
-    
-    def reset(self) -> None:
-        self.stim_log = self.init_stim_log.copy()
-        self.stim_log.sort()
-    
+        self.stim_log = []
+
+    def __len__(self) -> int:
+        return len(self.stim_log)
+
+    def load(self, path: str, frame_times: Optional[FrameTimes] = None) -> None:
+        if os.path.basename(path).endswith(".txt.txt"):
+            if frame_times is None:
+                raise ValueError("frameTimes must be provided.")
+            stim_log = UltraSoundStimLog(path).get_stim_lst(frame_times)
+            self.stim_log += stim_log
+            self.stim_log = list(set(self.stim_log))
+            self.stim_log.sort()
+        else:
+            stim_log = pd.read_csv(path)
+            for _, row in stim_log.iterrows():
+                self.append(row[self.START_COLNAME], row[self.END_COLNAME])
+
     def save(self, path: str) -> None:
         os.makedirs(path, exist_ok=True)
         stim_log = np.array(self.stim_log)
-        stim_log = pd.DataFrame(stim_log, columns=['start', 'end'])
+        stim_log = pd.DataFrame(
+            stim_log, columns=[self.START_COLNAME, self.END_COLNAME]
+        )
         stim_log.to_csv(path, index=False)
-        
-    
+
+    @property
+    def frames_idx(self) -> list[int]:
+        frames_idx = []
+        for start, end in self.stim_log:
+            frames_idx += list(range(start, end))
+        return frames_idx
+
+
+class BaselineInfo:
+    def __init__(
+        self,
+        mode: Literal["Frame Mode", "PreStim Mode"],
+        start: Optional[int] = None,
+        end: Optional[int] = None,
+        pre_sec: Optional[float] = None,
+    ) -> None:
+        self.mode = mode
+        self.start = start
+        self.end = end
+        self.pre_sec = pre_sec
+
     @classmethod
-    def load_from_file(cls, path: str) -> "StimLog":
-        stim_log = pd.read_csv(path).values
-        return cls(stim_log.tolist())
+    def load(cls, path: str) -> None:
+        with open(path, "r") as f:
+            mode = f.readline().strip()
+            match mode:
+                case "Frame Mode":
+                    mode = "Frame Mode"
+                    start = cls._frame_mode_decode(f.readline())
+                    end = cls._frame_mode_decode(f.readline())
+                    return cls(mode=mode, start=start, end=end)
+                case "PreStim Mode":
+                    mode = "PreStim Mode"
+                    pre_sec = cls._pre_stim_mode_decode(f.readline())
+                    return cls(mode=mode, pre_sec=pre_sec)
+
+    def save(self, path: str) -> None:
+        with open(path, "w") as f:
+            f.write(self.mode + "\n")
+            match self.mode:
+                case "Frame Mode":
+                    f.write(f"Start: {self.start}\n")
+                    f.write(f"End: {self.end}\n")
+                case "PreStim Mode":
+                    f.write(f"Seconds: {self.pre_sec}\n")
+
+    def _frame_mode_decode(self, line: str) -> int:
+        return int(line.split(":")[1].strip())
+
+    def _pre_stim_mode_decode(self, line: str) -> float:
+        return float(line.split(":")[1].strip())

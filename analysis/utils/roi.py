@@ -9,6 +9,9 @@ import numpy as np
 import pandas as pd
 
 
+__all__ = ["BoundPoints", "get_roi_average"]
+
+
 class BoundPoints:
     """Bound points.
 
@@ -86,6 +89,17 @@ class BoundPoints:
         df = pd.DataFrame({"x": self.x, "y": self.y})
         os.makedirs(os.path.dirname(path), exist_ok=True)
         df.to_csv(path, index=False)
+
+    def load(self, path: str) -> None:
+        """Load the bound points.
+
+        Args:
+            path: The path to load the bound points.
+        """
+        df = pd.read_csv(path)
+        self.clear()
+        for _, row in df.iterrows():
+            self.append((row["x"], row["y"]))
 
 
 class Point:
@@ -222,6 +236,5 @@ def get_roi_average(frames: np.ndarray, bound_points: BoundPoints) -> np.ndarray
     """
     width, height = frames.shape[-2:]
     inside_points = get_inside_points(width, height, bound_points)
-    inside_x = [x for x, _ in inside_points]
-    inside_y = [y for _, y in inside_points]
-    return frames[:, inside_x, inside_y].mean(axis=-1)
+    inside_x, inside_y = zip(*inside_points)
+    return np.mean(frames[:, inside_x, inside_y], axis=-1)

@@ -25,7 +25,9 @@ class Ui_Analyze(object):
         self.verticalLayout = QtWidgets.QVBoxLayout(self.Settings)
         self.verticalLayout.setObjectName("verticalLayout")
         self.TotalFrames = QtWidgets.QLabel(self.Settings)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.TotalFrames.sizePolicy().hasHeightForWidth())
@@ -38,10 +40,14 @@ class Ui_Analyze(object):
         self.TotalFrames.setObjectName("TotalFrames")
         self.verticalLayout.addWidget(self.TotalFrames)
         self.SamplingRateLabel = QtWidgets.QLabel(self.Settings)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.SamplingRateLabel.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.SamplingRateLabel.sizePolicy().hasHeightForWidth()
+        )
         self.SamplingRateLabel.setSizePolicy(sizePolicy)
         self.SamplingRateLabel.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -57,20 +63,28 @@ class Ui_Analyze(object):
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.Stimulus)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.StimulusLoader = QtWidgets.QWidget(self.Stimulus)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.StimulusLoader.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.StimulusLoader.sizePolicy().hasHeightForWidth()
+        )
         self.StimulusLoader.setSizePolicy(sizePolicy)
         self.StimulusLoader.setMinimumSize(QtCore.QSize(0, 40))
         self.StimulusLoader.setObjectName("StimulusLoader")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.StimulusLoader)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.StimulusLabel = QtWidgets.QLabel(self.StimulusLoader)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.StimulusLabel.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.StimulusLabel.sizePolicy().hasHeightForWidth()
+        )
         self.StimulusLabel.setSizePolicy(sizePolicy)
         self.StimulusLabel.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -80,10 +94,14 @@ class Ui_Analyze(object):
         self.StimulusLabel.setObjectName("StimulusLabel")
         self.horizontalLayout_3.addWidget(self.StimulusLabel)
         self.StimulusLoadButton = QtWidgets.QPushButton(self.StimulusLoader)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.StimulusLoadButton.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.StimulusLoadButton.sizePolicy().hasHeightForWidth()
+        )
         self.StimulusLoadButton.setSizePolicy(sizePolicy)
         self.StimulusLoadButton.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -92,10 +110,14 @@ class Ui_Analyze(object):
         self.StimulusLoadButton.setObjectName("StimulusLoadButton")
         self.horizontalLayout_3.addWidget(self.StimulusLoadButton)
         self.StimulusClearButton = QtWidgets.QPushButton(self.StimulusLoader)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.StimulusClearButton.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.StimulusClearButton.sizePolicy().hasHeightForWidth()
+        )
         self.StimulusClearButton.setSizePolicy(sizePolicy)
         self.StimulusClearButton.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -105,10 +127,14 @@ class Ui_Analyze(object):
         self.horizontalLayout_3.addWidget(self.StimulusClearButton)
         self.verticalLayout_3.addWidget(self.StimulusLoader)
         self.StimulusManager = QtWidgets.QFrame(self.Stimulus)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.StimulusManager.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.StimulusManager.sizePolicy().hasHeightForWidth()
+        )
         self.StimulusManager.setSizePolicy(sizePolicy)
         self.StimulusManager.setMinimumSize(QtCore.QSize(0, 70))
         self.StimulusManager.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -117,10 +143,14 @@ class Ui_Analyze(object):
         self.gridLayout = QtWidgets.QGridLayout(self.StimulusManager)
         self.gridLayout.setObjectName("gridLayout")
         self.StimulusStartLabel = QtWidgets.QLabel(self.StimulusManager)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.StimulusStartLabel.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.StimulusStartLabel.sizePolicy().hasHeightForWidth()
+        )
         self.StimulusStartLabel.setSizePolicy(sizePolicy)
         self.StimulusStartLabel.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -129,10 +159,14 @@ class Ui_Analyze(object):
         self.StimulusStartLabel.setObjectName("StimulusStartLabel")
         self.gridLayout.addWidget(self.StimulusStartLabel, 0, 0, 1, 1)
         self.StimulusStart = QtWidgets.QLineEdit(self.StimulusManager)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.StimulusStart.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.StimulusStart.sizePolicy().hasHeightForWidth()
+        )
         self.StimulusStart.setSizePolicy(sizePolicy)
         self.StimulusStart.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -141,10 +175,14 @@ class Ui_Analyze(object):
         self.StimulusStart.setObjectName("StimulusStart")
         self.gridLayout.addWidget(self.StimulusStart, 0, 1, 1, 1)
         self.StimulusEndLabel = QtWidgets.QLabel(self.StimulusManager)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.StimulusEndLabel.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.StimulusEndLabel.sizePolicy().hasHeightForWidth()
+        )
         self.StimulusEndLabel.setSizePolicy(sizePolicy)
         self.StimulusEndLabel.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -153,7 +191,9 @@ class Ui_Analyze(object):
         self.StimulusEndLabel.setObjectName("StimulusEndLabel")
         self.gridLayout.addWidget(self.StimulusEndLabel, 0, 2, 1, 1)
         self.StimulusEnd = QtWidgets.QLineEdit(self.StimulusManager)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.StimulusEnd.sizePolicy().hasHeightForWidth())
@@ -165,10 +205,14 @@ class Ui_Analyze(object):
         self.StimulusEnd.setObjectName("StimulusEnd")
         self.gridLayout.addWidget(self.StimulusEnd, 0, 3, 1, 1)
         self.AddStimulusButton = QtWidgets.QPushButton(self.StimulusManager)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.AddStimulusButton.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.AddStimulusButton.sizePolicy().hasHeightForWidth()
+        )
         self.AddStimulusButton.setSizePolicy(sizePolicy)
         self.AddStimulusButton.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -177,10 +221,14 @@ class Ui_Analyze(object):
         self.AddStimulusButton.setObjectName("AddStimulusButton")
         self.gridLayout.addWidget(self.AddStimulusButton, 1, 0, 1, 2)
         self.RemoveStimulusButton = QtWidgets.QPushButton(self.StimulusManager)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.RemoveStimulusButton.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.RemoveStimulusButton.sizePolicy().hasHeightForWidth()
+        )
         self.RemoveStimulusButton.setSizePolicy(sizePolicy)
         self.RemoveStimulusButton.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -190,7 +238,9 @@ class Ui_Analyze(object):
         self.gridLayout.addWidget(self.RemoveStimulusButton, 1, 2, 1, 2)
         self.verticalLayout_3.addWidget(self.StimulusManager)
         self.StimulusList = QtWidgets.QListWidget(self.Stimulus)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.StimulusList.sizePolicy().hasHeightForWidth())
@@ -202,10 +252,14 @@ class Ui_Analyze(object):
         self.verticalLayout_3.addWidget(self.StimulusList)
         self.verticalLayout.addWidget(self.Stimulus)
         self.ImageRangeSetting = QtWidgets.QFrame(self.Settings)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.ImageRangeSetting.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.ImageRangeSetting.sizePolicy().hasHeightForWidth()
+        )
         self.ImageRangeSetting.setSizePolicy(sizePolicy)
         self.ImageRangeSetting.setMinimumSize(QtCore.QSize(0, 40))
         self.ImageRangeSetting.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -214,10 +268,14 @@ class Ui_Analyze(object):
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.ImageRangeSetting)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.ImageRangeLabel = QtWidgets.QLabel(self.ImageRangeSetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.ImageRangeLabel.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.ImageRangeLabel.sizePolicy().hasHeightForWidth()
+        )
         self.ImageRangeLabel.setSizePolicy(sizePolicy)
         self.ImageRangeLabel.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -227,10 +285,14 @@ class Ui_Analyze(object):
         self.ImageRangeLabel.setObjectName("ImageRangeLabel")
         self.horizontalLayout_5.addWidget(self.ImageRangeLabel)
         self.ImageRangePercentage = QtWidgets.QLineEdit(self.ImageRangeSetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.ImageRangePercentage.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.ImageRangePercentage.sizePolicy().hasHeightForWidth()
+        )
         self.ImageRangePercentage.setSizePolicy(sizePolicy)
         self.ImageRangePercentage.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -239,10 +301,14 @@ class Ui_Analyze(object):
         self.ImageRangePercentage.setObjectName("ImageRangePercentage")
         self.horizontalLayout_5.addWidget(self.ImageRangePercentage)
         self.ImageRangeUnit = QtWidgets.QLabel(self.ImageRangeSetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.ImageRangeUnit.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.ImageRangeUnit.sizePolicy().hasHeightForWidth()
+        )
         self.ImageRangeUnit.setSizePolicy(sizePolicy)
         self.ImageRangeUnit.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -251,10 +317,14 @@ class Ui_Analyze(object):
         self.ImageRangeUnit.setObjectName("ImageRangeUnit")
         self.horizontalLayout_5.addWidget(self.ImageRangeUnit)
         self.ImageRangeConfirmButton = QtWidgets.QPushButton(self.ImageRangeSetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.ImageRangeConfirmButton.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.ImageRangeConfirmButton.sizePolicy().hasHeightForWidth()
+        )
         self.ImageRangeConfirmButton.setSizePolicy(sizePolicy)
         self.ImageRangeConfirmButton.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -263,10 +333,14 @@ class Ui_Analyze(object):
         self.ImageRangeConfirmButton.setObjectName("ImageRangeConfirmButton")
         self.horizontalLayout_5.addWidget(self.ImageRangeConfirmButton)
         self.ImageRangeSaveButton = QtWidgets.QPushButton(self.ImageRangeSetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.ImageRangeSaveButton.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.ImageRangeSaveButton.sizePolicy().hasHeightForWidth()
+        )
         self.ImageRangeSaveButton.setSizePolicy(sizePolicy)
         self.ImageRangeSaveButton.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -276,19 +350,23 @@ class Ui_Analyze(object):
         self.horizontalLayout_5.addWidget(self.ImageRangeSaveButton)
         self.verticalLayout.addWidget(self.ImageRangeSetting)
         self.ROISetting = QtWidgets.QFrame(self.Settings)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.ROISetting.sizePolicy().hasHeightForWidth())
         self.ROISetting.setSizePolicy(sizePolicy)
-        self.ROISetting.setMinimumSize(QtCore.QSize(0, 40))
+        self.ROISetting.setMinimumSize(QtCore.QSize(0, 70))
         self.ROISetting.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.ROISetting.setFrameShadow(QtWidgets.QFrame.Raised)
         self.ROISetting.setObjectName("ROISetting")
-        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.ROISetting)
-        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.ROISetting)
+        self.gridLayout_2.setObjectName("gridLayout_2")
         self.ROILabel = QtWidgets.QLabel(self.ROISetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.ROILabel.sizePolicy().hasHeightForWidth())
@@ -299,43 +377,61 @@ class Ui_Analyze(object):
         font.setBold(True)
         self.ROILabel.setFont(font)
         self.ROILabel.setObjectName("ROILabel")
-        self.horizontalLayout_6.addWidget(self.ROILabel)
+        self.gridLayout_2.addWidget(self.ROILabel, 0, 0, 2, 1)
+        self.ROILoadButton = QtWidgets.QPushButton(self.ROISetting)
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        self.ROILoadButton.setFont(font)
+        self.ROILoadButton.setObjectName("ROILoadButton")
+        self.gridLayout_2.addWidget(self.ROILoadButton, 0, 1, 1, 1)
         self.ROIRemoveButton = QtWidgets.QPushButton(self.ROISetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.ROIRemoveButton.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.ROIRemoveButton.sizePolicy().hasHeightForWidth()
+        )
         self.ROIRemoveButton.setSizePolicy(sizePolicy)
         self.ROIRemoveButton.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
         font.setFamily("Arial")
         self.ROIRemoveButton.setFont(font)
         self.ROIRemoveButton.setObjectName("ROIRemoveButton")
-        self.horizontalLayout_6.addWidget(self.ROIRemoveButton)
+        self.gridLayout_2.addWidget(self.ROIRemoveButton, 0, 2, 1, 1)
         self.ROIClearButton = QtWidgets.QPushButton(self.ROISetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.ROIClearButton.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.ROIClearButton.sizePolicy().hasHeightForWidth()
+        )
         self.ROIClearButton.setSizePolicy(sizePolicy)
         self.ROIClearButton.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
         font.setFamily("Arial")
         self.ROIClearButton.setFont(font)
         self.ROIClearButton.setObjectName("ROIClearButton")
-        self.horizontalLayout_6.addWidget(self.ROIClearButton)
+        self.gridLayout_2.addWidget(self.ROIClearButton, 1, 1, 1, 1)
         self.ROISaveButton = QtWidgets.QPushButton(self.ROISetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.ROISaveButton.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.ROISaveButton.sizePolicy().hasHeightForWidth()
+        )
         self.ROISaveButton.setSizePolicy(sizePolicy)
         self.ROISaveButton.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
         font.setFamily("Arial")
         self.ROISaveButton.setFont(font)
         self.ROISaveButton.setObjectName("ROISaveButton")
-        self.horizontalLayout_6.addWidget(self.ROISaveButton)
+        self.gridLayout_2.addWidget(self.ROISaveButton, 1, 2, 1, 1)
         self.verticalLayout.addWidget(self.ROISetting)
         self.horizontalLayout.addWidget(self.Settings)
         self.BaselingSettingandImage = QtWidgets.QFrame(Analyze)
@@ -345,10 +441,14 @@ class Ui_Analyze(object):
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.BaselingSettingandImage)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.BaselineSetting = QtWidgets.QFrame(self.BaselingSettingandImage)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.BaselineSetting.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.BaselineSetting.sizePolicy().hasHeightForWidth()
+        )
         self.BaselineSetting.setSizePolicy(sizePolicy)
         self.BaselineSetting.setMinimumSize(QtCore.QSize(0, 200))
         self.BaselineSetting.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -357,10 +457,14 @@ class Ui_Analyze(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.BaselineSetting)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.BaselineLabel = QtWidgets.QLabel(self.BaselineSetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.BaselineLabel.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.BaselineLabel.sizePolicy().hasHeightForWidth()
+        )
         self.BaselineLabel.setSizePolicy(sizePolicy)
         self.BaselineLabel.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -370,10 +474,14 @@ class Ui_Analyze(object):
         self.BaselineLabel.setObjectName("BaselineLabel")
         self.verticalLayout_2.addWidget(self.BaselineLabel)
         self.FrameModeButton = QtWidgets.QRadioButton(self.BaselineSetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.FrameModeButton.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.FrameModeButton.sizePolicy().hasHeightForWidth()
+        )
         self.FrameModeButton.setSizePolicy(sizePolicy)
         self.FrameModeButton.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -383,20 +491,28 @@ class Ui_Analyze(object):
         self.FrameModeButton.setObjectName("FrameModeButton")
         self.verticalLayout_2.addWidget(self.FrameModeButton)
         self.FrameModeSetting = QtWidgets.QWidget(self.BaselineSetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.FrameModeSetting.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.FrameModeSetting.sizePolicy().hasHeightForWidth()
+        )
         self.FrameModeSetting.setSizePolicy(sizePolicy)
         self.FrameModeSetting.setMinimumSize(QtCore.QSize(0, 40))
         self.FrameModeSetting.setObjectName("FrameModeSetting")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.FrameModeSetting)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.BaselineStartLabel = QtWidgets.QLabel(self.FrameModeSetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.BaselineStartLabel.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.BaselineStartLabel.sizePolicy().hasHeightForWidth()
+        )
         self.BaselineStartLabel.setSizePolicy(sizePolicy)
         self.BaselineStartLabel.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -405,10 +521,14 @@ class Ui_Analyze(object):
         self.BaselineStartLabel.setObjectName("BaselineStartLabel")
         self.horizontalLayout_4.addWidget(self.BaselineStartLabel)
         self.BaselineStart = QtWidgets.QLineEdit(self.FrameModeSetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.BaselineStart.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.BaselineStart.sizePolicy().hasHeightForWidth()
+        )
         self.BaselineStart.setSizePolicy(sizePolicy)
         self.BaselineStart.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -417,10 +537,14 @@ class Ui_Analyze(object):
         self.BaselineStart.setObjectName("BaselineStart")
         self.horizontalLayout_4.addWidget(self.BaselineStart)
         self.BaselineEndLabel = QtWidgets.QLabel(self.FrameModeSetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.BaselineEndLabel.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.BaselineEndLabel.sizePolicy().hasHeightForWidth()
+        )
         self.BaselineEndLabel.setSizePolicy(sizePolicy)
         self.BaselineEndLabel.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -429,7 +553,9 @@ class Ui_Analyze(object):
         self.BaselineEndLabel.setObjectName("BaselineEndLabel")
         self.horizontalLayout_4.addWidget(self.BaselineEndLabel)
         self.BaselineEnd = QtWidgets.QLineEdit(self.FrameModeSetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.BaselineEnd.sizePolicy().hasHeightForWidth())
@@ -442,10 +568,14 @@ class Ui_Analyze(object):
         self.horizontalLayout_4.addWidget(self.BaselineEnd)
         self.verticalLayout_2.addWidget(self.FrameModeSetting)
         self.PreStimModeButton = QtWidgets.QRadioButton(self.BaselineSetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.PreStimModeButton.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.PreStimModeButton.sizePolicy().hasHeightForWidth()
+        )
         self.PreStimModeButton.setSizePolicy(sizePolicy)
         self.PreStimModeButton.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -455,20 +585,28 @@ class Ui_Analyze(object):
         self.PreStimModeButton.setObjectName("PreStimModeButton")
         self.verticalLayout_2.addWidget(self.PreStimModeButton)
         self.PreStimModeSetting = QtWidgets.QWidget(self.BaselineSetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.PreStimModeSetting.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.PreStimModeSetting.sizePolicy().hasHeightForWidth()
+        )
         self.PreStimModeSetting.setSizePolicy(sizePolicy)
         self.PreStimModeSetting.setMinimumSize(QtCore.QSize(0, 40))
         self.PreStimModeSetting.setObjectName("PreStimModeSetting")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.PreStimModeSetting)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.PreStimModeProSecs = QtWidgets.QLineEdit(self.PreStimModeSetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.PreStimModeProSecs.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.PreStimModeProSecs.sizePolicy().hasHeightForWidth()
+        )
         self.PreStimModeProSecs.setSizePolicy(sizePolicy)
         self.PreStimModeProSecs.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -477,10 +615,14 @@ class Ui_Analyze(object):
         self.PreStimModeProSecs.setObjectName("PreStimModeProSecs")
         self.horizontalLayout_2.addWidget(self.PreStimModeProSecs)
         self.PreStimModeUnit = QtWidgets.QLabel(self.PreStimModeSetting)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.PreStimModeUnit.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.PreStimModeUnit.sizePolicy().hasHeightForWidth()
+        )
         self.PreStimModeUnit.setSizePolicy(sizePolicy)
         self.PreStimModeUnit.setMinimumSize(QtCore.QSize(0, 20))
         font = QtGui.QFont()
@@ -491,7 +633,9 @@ class Ui_Analyze(object):
         self.verticalLayout_2.addWidget(self.PreStimModeSetting)
         self.verticalLayout_4.addWidget(self.BaselineSetting)
         self.ImageShower = QtWidgets.QFrame(self.BaselingSettingandImage)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.ImageShower.sizePolicy().hasHeightForWidth())
@@ -522,7 +666,8 @@ class Ui_Analyze(object):
         self.ImageRangeConfirmButton.setText(_translate("Analyze", "Confirm"))
         self.ImageRangeSaveButton.setText(_translate("Analyze", "Save"))
         self.ROILabel.setText(_translate("Analyze", "ROI"))
-        self.ROIRemoveButton.setText(_translate("Analyze", "Remove"))
+        self.ROILoadButton.setText(_translate("Analyze", "Load"))
+        self.ROIRemoveButton.setText(_translate("Analyze", "Reset"))
         self.ROIClearButton.setText(_translate("Analyze", "Clear"))
         self.ROISaveButton.setText(_translate("Analyze", "Save"))
         self.BaselineLabel.setText(_translate("Analyze", "Baseline"))
@@ -535,6 +680,7 @@ class Ui_Analyze(object):
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     Analyze = QtWidgets.QWidget()
     ui = Ui_Analyze()
