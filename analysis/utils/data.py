@@ -303,6 +303,10 @@ class StimLog:
             frames_idx += list(range(start, end))
         return frames_idx
 
+    @property
+    def content(self) -> list[str]:
+        return [f"Start: {start}; End: {end}" for start, end in self.stim_log]
+
 
 class BaselineInfo:
     def __init__(

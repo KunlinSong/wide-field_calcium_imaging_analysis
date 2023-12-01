@@ -1,12 +1,12 @@
 import os
 
 import cv2
+import dorsal_map_src
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.io as sio
+import utils
 from matplotlib.colors import ListedColormap
-
-from . import dorsal_map_src, utils
 
 __all__ = ["DorsalMap"]
 
