@@ -1,293 +1,198 @@
 import os
-from typing import *
+from typing import Optional
 
-__all__ = ["CorrInfo", "Path", "get_file_number"]
-
-
-def get_file_number(path: str) -> Optional[int]:
-    """Get the file number.
-
-    Args:
-        path (str): The path of the file.
-
-    Returns:
-        int: The file number.
-    """
-    filename = os.path.basename(path)
-    no_ext = os.path.splitext(filename)[0]
-    info = no_ext.split("_")
-    file_number = int(info.pop(-1)) if info[-1].isdigit() else None
-    return file_number
+__all__ = ["Path"]
 
 
-# class CorrInfo:
-#     path: str
-#     dirname: str
-#     file_number: int
-
-#     def __init__(self, path: str) -> "CorrInfo":
-#         """Get the corr info from the path of the corrected frames file.
-
-#         Args:
-#             path (str): The path of the corrected frames file.
-
-#         Returns:
-#             CorrInfo: The corrected frames info.
-#         """
-#         dirname = os.path.dirname
-#         file_number_dirname = os.path.join(dirname, "..")
-#         self.path = path
-#         self.file_number = int(os.path.basename(file_number_dirname))
-#         self.dirname = os.path.join(file_number_dirname, "..", "..")
-
-
-class Path:
-    """The class for the path and directory of the files and folders in the analysis.
-
-    Attributes:
-        path: The path of the data file.
-    """
-
-    FRAMETIMES_BASE_FILENAME = "frameTimes.mat"
-    GENERATE_FOLDER_NAME = "generate"
-    NAN_FOLDER_NAME = "NaN"
-    LOG_FOLDER_NAME = "log"
-    SAMPLING_RATE_FILENAME = "sampling_rate.txt"
-    ANCHOR_FILENAME = "anchor.yaml"
-    CORRECTED_FRAMES_FILENAME = "corrected_frames.npy"
-    RESULT_FOLDER_NAME = "result"
-    STRUCTURES_CHANGE_FILENAME = "structures_change.csv"
-    IMAGE_FOLDER_NAME = "image"
-    IMAGE_FILENAME = "image.png"
-    STIMULUS_FILENAME = "stimulus.csv"
-    RANGE_FILENAME = "range.txt"
-    ROI_FOLDER_NAME = "roi"
-    ROI_CHANGE_FILENAME = "roi_change.csv"
-    ROI_BOUND_FILENAME = "roi_bound.csv"
-    ROI_IMAGE_FILENAME = "roi_image.png"
-    ROI_RANGE_FILENAME = "roi_range.txt"
-    # TODO: Make a baseline file path for each image and roi. With 2 keys
-    # of Mode "Frame Mode"(Frame) and "PreStim Mode"(Second).
-    BASELINE_FILENAME = "baseline.txt"
-
-    # def __init__(self, path: str, corr_info: Optional[CorrInfo]) -> None:
-    def __init__(self, path: str) -> None:
-        """Initialize the path.
-
-        Args:
-            path (str): The path of the data file.
-        """
-        self.raw_path = path
-
-        self.dirname = os.path.dirname(path)
-        self.file_number = get_file_number(path)
-        # if corr_info is None:
-        #     self.dirname = os.path.dirname(path)
-        #     self.file_number = get_file_number(path)
-        # else:
-        #     self.dirname = corr_info.dirname
-        #     self.file_number = corr_info.file_number
+class ImageMixin:
+    _dirname: str
+    _num: int
+    _filename_lst: list[str]
+    _COLOR_RANGE = "Color Range.txt"
+    _STIMULUS = "Stimulus.csv"
+    _BASELINE = "Baseline.csv"
 
     @property
-    def frametimes_path(self) -> str:
-        """The path of the frametimes file."""
-        if self.file_number is None:
-            return os.path.join(self.dirname, self.FRAMETIMES_BASE_FILENAME)
+    def _num(self) -> int:
+        _num = len(os.listdir(self._dirname))
+        if _num == 0:
+            return 0
         else:
-            name, ext = os.path.splitext(self.FRAMETIMES_BASE_FILENAME)
-            return os.path.join(self.dirname, f"{name}_{self.file_number:04}{ext}")
-
-    @property
-    def generate_directory(self) -> str:
-        """The directory of the generate folder."""
-        directory = os.path.join(self.dirname, self.GENERATE_FOLDER_NAME)
-        os.makedirs(directory, exist_ok=True)
-        return directory
-
-    @property
-    def file_number_directory(self) -> str:
-        """The directory for the generate files from the data file."""
-        if self.file_number is None:
-            directory = os.path.join(self.generate_directory, self.NAN_FOLDER_NAME)
-        else:
-            directory = os.path.join(self.generate_directory, f"{self.file_number:04}")
-        os.makedirs(directory, exist_ok=True)
-        return directory
-
-    @property
-    def log_directory(self) -> str:
-        """The directory for the log files."""
-        directory = os.path.join(self.file_number_directory, self.LOG_FOLDER_NAME)
-        os.makedirs(directory, exist_ok=True)
-        return directory
-
-    @property
-    def sampling_rate_path(self) -> str:
-        """The path of the sampling rate file."""
-        return os.path.join(self.log_directory, self.SAMPLING_RATE_FILENAME)
-
-    @property
-    def anchor_path(self) -> str:
-        """The path of the file with the anchor for perspective correction."""
-        return os.path.join(self.log_directory, self.ANCHOR_FILENAME)
-
-    @property
-    def corrected_frames_path(self) -> str:
-        """The path of the corrected frames data."""
-        return os.path.join(self.log_directory, self.CORRECTED_FRAMES_FILENAME)
-
-    @property
-    def result_directory(self) -> str:
-        """The directory for the result files."""
-        directory = os.path.join(self.file_number_directory, self.RESULT_FOLDER_NAME)
-        os.makedirs(directory, exist_ok=True)
-        return directory
-
-    @property
-    def structures_change_path(self) -> str:
-        """The path of the file with the change of the structures in brain."""
-        return os.path.join(self.result_directory, self.STRUCTURES_CHANGE_FILENAME)
-
-    @property
-    def image_directory(self) -> str:
-        """The directory for the images which need to be saved."""
-        directory = os.path.join(self.result_directory, self.IMAGE_FOLDER_NAME)
-        os.makedirs(directory, exist_ok=True)
-        return directory
-
-    @property
-    def image_number(self) -> int:
-        """The image number of the image which needs to be saved."""
-        image_number = len(os.listdir(self.image_directory))
-        if image_number == 0:
-            return image_number
-        else:
-            image_number -= 1
-            image_number_directory = os.path.join(
-                self.image_directory, f"{image_number}"
+            _num -= 1
+            get_sub_path = lambda filename: os.path.join(
+                self._dirname, f"{_num}", filename
             )
-            image_result_path = os.path.join(
-                image_number_directory, self.IMAGE_FILENAME
-            )
-            stim_log_path = os.path.join(image_number_directory, self.STIMULUS_FILENAME)
-            range_path = os.path.join(image_number_directory, self.RANGE_FILENAME)
-            img_baseline_path = os.path.join(
-                image_number_directory, self.BASELINE_FILENAME
-            )
-            if all(
-                [
-                    os.path.exists(image_result_path),
-                    os.path.exists(stim_log_path),
-                    os.path.exists(range_path),
-                    os.path.exists(img_baseline_path),
-                ]
-            ):
-                return image_number + 1
-            else:
-                return image_number
+            for filename in self._filename_lst:
+                if not os.path.exists(get_sub_path(filename)):
+                    return _num
+            return _num + 1
 
     @property
-    def image_number_directory(self) -> str:
-        """The directory for the image which needs to be saved."""
-        directory = os.path.join(self.image_directory, f"{self.image_number}")
-        os.makedirs(directory, exist_ok=True)
-        return directory
+    def _num_dirname(self) -> str:
+        _num_dirname = os.path.join(self._dirname, f"{self._num}")
+        os.makedirs(_num_dirname, exist_ok=True)
+        return _num_dirname
+
+    def _get_sub_path(self, filename: str) -> str:
+        return os.path.join(self._num_dirname, filename)
 
     @property
-    def image_path(self) -> str:
-        """The path of the image which needs to be saved."""
-        return os.path.join(self.image_number_directory, self.IMAGE_FILENAME)
+    def color_range_path(self) -> str:
+        return self._get_sub_path(self._COLOR_RANGE)
 
     @property
     def stimulus_path(self) -> str:
-        """The path of the stimulus file attached to the image."""
-        return os.path.join(self.image_number_directory, self.STIMULUS_FILENAME)
+        return self._get_sub_path(self._STIMULUS)
 
     @property
-    def range_path(self) -> str:
-        """The path of the range file attached to the image."""
-        return os.path.join(self.image_number_directory, self.RANGE_FILENAME)
+    def baseline_path(self) -> str:
+        return self._get_sub_path(self._BASELINE)
+
+
+class ROIDirectory(ImageMixin):
+    _ROI_VARIATION = "ROI Variation.csv"
+    _ROI_BOUNDING_POINTS = "ROI Bounding Points.csv"
+    _ROI_IMAGE = "ROI.png"
+
+    def __init__(self, dirname: str) -> None:
+        self._dirname = dirname
+        os.makedirs(dirname, exist_ok=True)
 
     @property
-    def img_baseline_path(self) -> str:
-        """The path of the baseline file attached to the image."""
-        return os.path.join(self.image_number_directory, self.BASELINE_FILENAME)
+    def _filename_lst(self) -> list[str]:
+        return [
+            self._ROI_VARIATION,
+            self._ROI_BOUNDING_POINTS,
+            self._ROI_IMAGE,
+            self._COLOR_RANGE,
+            self._STIMULUS,
+            self._BASELINE,
+        ]
 
     @property
-    def roi_directory(self) -> str:
-        """The directory for the ROI files which need to be saved."""
-        directory = os.path.join(self.result_directory, self.ROI_FOLDER_NAME)
-        os.makedirs(directory, exist_ok=True)
-        return directory
+    def roi_variation_path(self) -> str:
+        return self._get_sub_path(self._ROI_VARIATION)
 
     @property
-    def roi_number(self) -> int:
-        """The ROI number of the ROI which needs to be saved."""
-        roi_number = len(os.listdir(self.roi_directory))
-        if roi_number == 0:
-            return roi_number
-        else:
-            roi_number -= 1
-            roi_number_directory = os.path.join(self.roi_directory, f"{roi_number}")
-            roi_result_path = os.path.join(
-                roi_number_directory, self.ROI_IMAGE_FILENAME
-            )
-            roi_change_path = os.path.join(
-                roi_number_directory, self.ROI_CHANGE_FILENAME
-            )
-            roi_bound_path = os.path.join(roi_number_directory, self.ROI_BOUND_FILENAME)
-            roi_range_path = os.path.join(roi_number_directory, self.ROI_RANGE_FILENAME)
-            roi_baseline_path = os.path.join(
-                roi_number_directory, self.BASELINE_FILENAME
-            )
-            roi_stim_path = os.path.join(roi_number_directory, self.STIMULUS_FILENAME)
-            if all(
-                [
-                    os.path.exists(roi_result_path),
-                    os.path.exists(roi_change_path),
-                    os.path.exists(roi_bound_path),
-                    os.path.exists(roi_range_path),
-                    os.path.exists(roi_baseline_path),
-                    os.path.exists(roi_stim_path),
-                ]
-            ):
-                return roi_number + 1
-            else:
-                return roi_number
-
-    @property
-    def roi_number_directory(self) -> str:
-        """The directory for the ROI which needs to be saved."""
-        directory = os.path.join(self.roi_directory, f"{self.roi_number}")
-        os.makedirs(directory, exist_ok=True)
-        return directory
+    def roi_bounding_points_path(self) -> str:
+        return self._get_sub_path(self._ROI_BOUNDING_POINTS)
 
     @property
     def roi_image_path(self) -> str:
-        """The path of the ROI image which needs to be saved."""
-        return os.path.join(self.roi_number_directory, self.ROI_IMAGE_FILENAME)
+        return self._get_sub_path(self._ROI_IMAGE)
+
+
+class ImageDirectory(ImageMixin):
+    IMAGE = "Image.png"
+
+    def __init__(self, dirname: str) -> None:
+        self._dirname = dirname
+        os.makedirs(dirname, exist_ok=True)
 
     @property
-    def roi_change_path(self) -> str:
-        """The path of the ROI change file which needs to be saved."""
-        return os.path.join(self.roi_number_directory, self.ROI_CHANGE_FILENAME)
+    def _filename_lst(self) -> list[str]:
+        return [self.IMAGE, self._COLOR_RANGE, self._STIMULUS, self._BASELINE]
 
     @property
-    def roi_bound_path(self) -> str:
-        """The path of the ROI bound file which needs to be saved."""
-        return os.path.join(self.roi_number_directory, self.ROI_BOUND_FILENAME)
+    def image_path(self) -> str:
+        return self._get_sub_path(self.IMAGE)
+
+
+class AnalysisDirectory:
+    roi_dir: ROIDirectory
+    image_dir: ImageDirectory
+    _STRUCTURE_VARIATION = "Structure Variation.csv"
+    _ROI_DIRNAME = "ROI"
+    _IMAGE_DIRNAME = "Image"
+
+    def __init__(self, dirname: str) -> None:
+        self._dirname = dirname
+        os.makedirs(dirname, exist_ok=True)
+        self.roi_dir = ROIDirectory(os.path.join(dirname, self._ROI_DIRNAME))
+        self.image_dir = ImageDirectory(os.path.join(dirname, self._IMAGE_DIRNAME))
 
     @property
-    def roi_range_path(self) -> str:
-        """The path of the ROI range file which needs to be saved."""
-        return os.path.join(self.roi_number_directory, self.ROI_RANGE_FILENAME)
+    def structure_variation_path(self) -> str:
+        return os.path.join(self._dirname, self._STRUCTURE_VARIATION)
+
+
+class PreprocessingDirectory:
+    _CORRECTED_FRAMES = "Corrected Frames.npy"
+
+    def __init__(self, dirname: str) -> None:
+        self._dirname = dirname
+        os.makedirs(dirname, exist_ok=True)
 
     @property
-    def roi_baseline_path(self) -> str:
-        """The path of the ROI baseline file which needs to be saved."""
-        return os.path.join(self.roi_number_directory, self.BASELINE_FILENAME)
+    def corrected_frames_path(self) -> str:
+        return os.path.join(self._dirname, self._CORRECTED_FRAMES)
 
     @property
-    def roi_stimulus_path(self) -> str:
-        """The path of the ROI stimulus file which needs to be saved."""
-        return os.path.join(self.roi_number_directory, self.STIMULUS_FILENAME)
+    def have_been_preprocessed(self) -> bool:
+        return os.path.exists(self.corrected_frames_path)
+
+
+class LogDirectory:
+    _SAMPLING_RATE = "Sampling Rate.txt"
+    _ANCHOR = "Anchor.yaml"
+
+    def __init__(self, dirname: str) -> None:
+        self._dirname = dirname
+        os.makedirs(dirname, exist_ok=True)
+
+    @property
+    def sampling_rate_path(self) -> str:
+        return os.path.join(self._dirname, self._SAMPLING_RATE)
+
+    @property
+    def anchor_path(self) -> str:
+        return os.path.join(self._dirname, self._ANCHOR)
+
+
+class GenerateDirectory:
+    log_dir: LogDirectory
+    preprocessing_dir: PreprocessingDirectory
+    analysis_dir: AnalysisDirectory
+    _LOG_DIRNAME = "Log"
+    _PREPROCESSING_DIRNAME = "Preprocessing"
+    _ANALYSIS_DIRNAME = "Analysis"
+
+    def __init__(self, dirname: str) -> None:
+        self._dirname = dirname
+        os.makedirs(dirname, exist_ok=True)
+        self.log_dir = LogDirectory(os.path.join(dirname, self._LOG_DIRNAME))
+        self.preprocessing_dir = PreprocessingDirectory(
+            os.path.join(dirname, self._PREPROCESSING_DIRNAME)
+        )
+        self.analysis_dir = AnalysisDirectory(
+            os.path.join(dirname, self._ANALYSIS_DIRNAME)
+        )
+
+
+class Path:
+    _NaN = "NaN"
+    _FRAMETIMES = "frameTimes.mat"
+
+    def _get_file_number(self, path: str) -> Optional[int]:
+        _no_ext = os.path.splitext(path)[0]
+        _file_number = _no_ext.rsplit("_", 1)[-1]
+        return int(_file_number) if _file_number.isdigit() else None
+
+    def __init__(self, path: str) -> None:
+        self._path = path
+        self._dirname = os.path.dirname(path)
+        _file_number = self._get_file_number(path)
+        join_dirname = lambda filename: os.path.join(self._dirname, filename)
+        if _file_number is None:
+            _generate_dirname = join_dirname(self._NaN)
+            self.frametimes_path = join_dirname(self._FRAMETIMES)
+        else:
+            _generate_dirname = join_dirname(f"{_file_number:04}")
+            _filename, _ext = os.path.splitext(self._FRAMETIMES)
+            _frametimes_filename = f"{_filename}_{_file_number:04}{_ext}"
+            self.frametimes_path = join_dirname(_frametimes_filename)
+        self.generate_dir = GenerateDirectory(_generate_dirname)
+
+    @property
+    def data_path(self) -> str:
+        return self._path

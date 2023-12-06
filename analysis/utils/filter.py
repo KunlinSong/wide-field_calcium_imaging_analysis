@@ -1,5 +1,3 @@
-from typing import *
-
 import numpy as np
 from scipy import signal
 

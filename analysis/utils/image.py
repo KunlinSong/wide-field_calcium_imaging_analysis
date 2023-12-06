@@ -1,158 +1,180 @@
-# TODO
-# 旋转、缩放（用户锚定）
-# 透视（脑锚定）
-# 多图取平均（多次刺激叠加）
-
 from typing import *
 
 import cv2
 import numpy as np
 
 __all__ = [
-    "ImagePerspectiveTransform",
-    "get_average_image",
-    "perspective",
-    "rotate",
-    "zoom",
+    "PaddingTransformer",
+    "PerspectiveTransformer",
+    "RotationTransformer",
+    "ZoomBox",
 ]
 
 
-def rotate(img: np.ndarray, angle: float, center: tuple[int, int]) -> np.ndarray:
-    """Rotate an image.
+class RotationTransformer:
+    def __init__(self, angel: float = 0, center: tuple[int, int] = (0, 0)) -> None:
+        self.angle = angel
+        self.center = center
 
-    Args:
-        img: The image to be rotated.
-        angle: The angle of rotation.
-        center: The center of rotation.
+    @property
+    def _rotation_matrix(self) -> np.ndarray:
+        return cv2.getRotationMatrix2D(center=self.center, angle=self.angle, scale=1)
 
-    Returns:
-        The rotated image.
-    """
-    h, w = img.shape[-2:]
-    mat = cv2.getRotationMatrix2D(center=center, angle=angle, scale=1)
-    return cv2.warpAffine(src=img, M=mat, dsize=(w, h), flags=cv2.INTER_LINEAR)
+    @property
+    def _inverse_rotation_matrix(self) -> np.ndarray:
+        return cv2.getRotationMatrix2D(center=self.center, angle=-self.angle, scale=1)
 
+    def rotate(self, img: np.ndarray) -> np.ndarray:
+        h, w = img.shape[-2:]
+        return cv2.warpAffine(
+            src=img, M=self._rotation_matrix, dsize=(w, h), flags=cv2.INTER_LINEAR
+        )
 
-def zoom(
-    upper: Union[int, float],
-    lower: Union[int, float],
-    left: Union[int, float],
-    right: Union[int, float],
-    state: Literal["in", "out"],
-) -> tuple[float, float, float, float]:
-    """Zoom an image.
+    def inverse_rotate(self, img: np.ndarray) -> np.ndarray:
+        h, w = img.shape[-2:]
+        return cv2.warpAffine(
+            src=img,
+            M=self._inverse_rotation_matrix,
+            dsize=(w, h),
+            flags=cv2.INTER_LINEAR,
+        )
 
-    Args:
-        upper: The upper bound of the zoomed image.
-        lower: The lower bound of the zoomed image.
-        left: The left bound of the zoomed image.
-        right: The right bound of the zoomed image.
-        state: The state of the zooming.
+    def get_original_point(self, point: tuple[int, int]) -> tuple[int, int]:
+        return tuple(np.dot(self._inverse_rotation_matrix, np.array([*point, 1]))[:2])
 
-    Returns:
-        The zoomed upper, lower, left, right bounds.
-    """
-    FACTOR = 0.1
-    if state == "in":
-        factor = FACTOR
-    elif state == "out":
-        factor = -FACTOR
-
-    new_bound = lambda bound: bound * (1 - factor)
-    return (
-        new_bound(upper),
-        new_bound(lower),
-        new_bound(left),
-        new_bound(right),
-    )
+    def get_rotated_point(self, point: tuple[int, int]) -> tuple[int, int]:
+        return tuple(np.dot(self._rotation_matrix, np.array([*point, 1]))[:2])
 
 
-def perspective(
-    img: np.ndarray,
-    from_points: tuple[
-        tuple[int, int], tuple[int, int], tuple[int, int], tuple[int, int]
-    ],
-    to_points: tuple[
-        tuple[int, int], tuple[int, int], tuple[int, int], tuple[int, int]
-    ],
-) -> np.ndarray:
-    """Perspective an image.
-
-    Args:
-        img: The image to be perspective.
-        from_points: The original points.
-        to_points: The target points.
-
-    Returns:
-        The perspective image.
-    """
-    h, w = img.shape[-2:]
-    mat = cv2.getPerspectiveTransform(np.float32(from_points), np.float32(to_points))
-    return cv2.warpPerspective(img, mat, (w, h), flags=cv2.INTER_LINEAR)
-
-
-class ImagePerspectiveTransform:
-    """Perspective transform.
-
-    Attributes:
-        _fig_size: The size of the figure.
-        _from_points: The original points.
-        _to_points: The target points.
-    """
+class ZoomBox:
+    _FACTOR = 0.1
 
     def __init__(
         self,
-        fig_size: tuple[int, int],
-        from_points: tuple[
-            tuple[int, int], tuple[int, int], tuple[int, int], tuple[int, int]
-        ],
-        to_points: tuple[
-            tuple[int, int], tuple[int, int], tuple[int, int], tuple[int, int]
-        ],
+        position: tuple[int, int] = (0, 0),
+        upper_left: tuple[int, int] = (0, 0),
+        lower_right: tuple[int, int] = (0, 0),
     ) -> None:
-        """Initialize the perspective.
+        self.position = position
+        self.upper_left = upper_left
+        self.lower_right = lower_right
 
-        Args:
-            fig_size: The size of the figure.
-            from_points: The original points.
-            to_points: The target points.
-        """
-        self._fig_size = fig_size
+    @property
+    def xlim(self) -> tuple[int, int]:
+        return (
+            self.position[0] + self.upper_left[0],
+            self.position[0] + self.lower_right[0],
+        )
+
+    @property
+    def ylim(self) -> tuple[int, int]:
+        return (
+            self.position[1] + self.upper_left[1],
+            self.position[1] + self.lower_right[1],
+        )
+
+    def zoom(self, state: Literal["in", "out"], position: Optional[tuple[int, int]]):
+        if position is None:
+            position = self.position
+        factor = -self._FACTOR if state == "in" else self._FACTOR
+        transform = lambda point: (
+            int((point[0] + self.position[0] - position[0]) * (1 + factor)),
+            int((point[1] + self.position[1] - position[1]) * (1 + factor)),
+        )
+        self.upper_left = transform(self.upper_left)
+        self.lower_right = transform(self.lower_right)
+        self.position = position
+
+
+class PerspectiveTransformer:
+    def __init__(
+        self, from_points: tuple[tuple[int, int]], to_points: tuple[tuple[int, int]]
+    ) -> None:
         self._from_points = from_points
         self._to_points = to_points
-        self._mat = cv2.getPerspectiveTransform(
+        self._transform_matrix = self._get_transform_matrix(
+            self._from_points, self._to_points
+        )
+        self._inverse_transform_matrix = self._get_transform_matrix(
+            self._to_points, self._from_points
+        )
+
+    @staticmethod
+    def _get_transform_matrix(
+        from_points: tuple[tuple[int, int]], to_points: tuple[tuple[int, int]]
+    ) -> np.ndarray:
+        return cv2.getPerspectiveTransform(
             np.float32(from_points), np.float32(to_points)
         )
-        self._mat_inv = cv2.getPerspectiveTransform(
-            np.float32(to_points), np.float32(from_points)
+
+    @property
+    def from_points(self) -> tuple[tuple[int, int]]:
+        return self._from_points
+
+    @from_points.setter
+    def from_points(self, from_points: tuple[tuple[int, int]]) -> None:
+        self._from_points = from_points
+        self._transform_matrix = self._get_transform_matrix(
+            self._from_points, self._to_points
+        )
+        self._inverse_transform_matrix = self._get_transform_matrix(
+            self._to_points, self._from_points
         )
 
-    def __call__(self, img: np.ndarray, inverse: bool = False) -> np.ndarray:
-        """Perspective an image.
+    @property
+    def to_points(self) -> tuple[tuple[int, int]]:
+        return self._to_points
 
-        Args:
-            img: The image to be perspective.
-            inverse: Whether to inverse the perspective.
+    @to_points.setter
+    def to_points(self, to_points: tuple[tuple[int, int]]) -> None:
+        self._to_points = to_points
+        self._transform_matrix = self._get_transform_matrix(
+            self._from_points, self._to_points
+        )
+        self._inverse_transform_matrix = self._get_transform_matrix(
+            self._to_points, self._from_points
+        )
 
-        Returns:
-            The perspective image.
-        """
-        if inverse:
-            mat = self._mat_inv
-            flags = cv2.INTER_NEAREST
-        else:
-            mat = self._mat
-            flags = cv2.INTER_LINEAR
-        return cv2.warpPerspective(img, mat, self._fig_size, flags=flags)
+    def perspective_transform(self, img: np.ndarray) -> np.ndarray:
+        return cv2.warpPerspective(
+            src=img,
+            M=self._transform_matrix,
+            dsize=(img.shape[-1], img.shape[-2]),
+            flags=cv2.INTER_LINEAR,
+        )
+
+    def inverse_perspective_transform(self, img: np.ndarray) -> np.ndarray:
+        return cv2.warpPerspective(
+            src=img,
+            M=self._inverse_transform_matrix,
+            dsize=(img.shape[-1], img.shape[-2]),
+            flags=cv2.INTER_NEAREST,
+        )
+
+    def get_original_point(self, point: tuple[int, int]) -> tuple[int, int]:
+        return tuple(np.dot(self._inverse_transform_matrix, np.array([*point, 1]))[:2])
+
+    def get_transformed_point(self, point: tuple[int, int]) -> tuple[int, int]:
+        return tuple(np.dot(self._transform_matrix, np.array([*point, 1]))[:2])
 
 
-def get_average_image(images: list[np.ndarray]) -> np.ndarray:
-    """Get the average image of a list of images.
+class PaddingTransformer:
+    def __init__(
+        self, upper: int = 0, lower: int = 0, left: int = 0, right: int = 0
+    ) -> None:
+        self._upper = upper
+        self._lower = lower
+        self._left = left
+        self._right = right
 
-    Args:
-        images: The list of images.
+    def transform(self, img: np.ndarray) -> np.ndarray:
+        return np.pad(img, ((self._upper, self._lower), (self._left, self._right)))
 
-    Returns:
-        The average image.
-    """
-    return np.mean(np.stack(images), axis=0)
+    def inverse_transform(self, img: np.ndarray) -> np.ndarray:
+        return img[self._upper : -self._lower, self._left : -self._right]
+
+    def get_original_point(self, point: tuple[int, int]) -> tuple[int, int]:
+        return (point[0] - self._upper, point[1] - self._left)
+
+    def get_transformed_point(self, point: tuple[int, int]) -> tuple[int, int]:
+        return (point[0] + self._upper, point[1] + self._left)
