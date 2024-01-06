@@ -1,5 +1,5 @@
-# 数据路径，后缀可为：.dat, .tif, .mj2
-path: /home/kellan/Projects/Programming/Institution/GDIIST/ZhihaiQIU/XinxinWANG/wide-field_calcium_imaging_analysis/Data/New mouse wt/MappingParadigm/13-Jul-2023/Frames_2_640_540_uint16_0001.dat
+# 数据路径，后缀可为：.dat, .tif, .mj2，后两种并没有实际测试过
+path: /home/kellan/Projects/wide-field_calcium_imaging_analysis/Data/New mouse wt/MappingParadigm/13-Jul-2023/Frames_2_640_540_uint16_0001.dat
 # 数据的采样频率，用于计算Baseline，单位为Hz
 sampling_rate: 10
 # Baseline时间长度，即以刺激前多长时间为Baseline，单位为s
@@ -7,9 +7,9 @@ baseline_duration: 5
 # 刺激文件路径，可使用QiuLab使用的.txt.txt超声刺激记录文件；
 # 或者是.csv刺激记录文件（分析完成后将一律自动导出为.csv文件）；
 # 也可以为None，表示没有刺激记录文件
-stimulus_path: /home/kellan/Projects/Programming/Institution/GDIIST/ZhihaiQIU/XinxinWANG/wide-field_calcium_imaging_analysis/2023-10-25-17-05-50.txt.txt
+stimulus_path: /home/kellan/Projects/wide-field_calcium_imaging_analysis/2023-10-25-17-05-50.txt.txt
 # 补充刺激列表，即不在刺激文件中的刺激，在分析完成后会和刺激文件中的刺激合并导出；
-# 每个刺激格式为（刺激开始时间，刺激结束时间），均为相对数据开始的时间，单位为s
+# 每个刺激格式为（刺激开始时间，刺激结束时间），均为相对于数据最开始的frame的时间，单位为s
 supplement_stimulus: 
   - [0, 10]
   - [20, 30]
