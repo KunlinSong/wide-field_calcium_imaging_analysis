@@ -1,6 +1,3 @@
-from . import ui, utils
+from . import dorsal_map, utils
 
-__all__ = [
-    "ui",
-    "utils",
-]
+__all__ = ["dorsal_map", "utils"]

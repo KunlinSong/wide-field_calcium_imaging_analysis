@@ -21,7 +21,7 @@ __all__ = [
 class FramesInfo:
     def __init__(self, path: str) -> None:
         self.path = path
-        _info = os.path.splitext(os.path.dirname(path))[0].split("_")
+        _info = os.path.splitext(os.path.basename(path))[0].split("_")
         self.file_number = int(_info.pop(-1)) if _info[-1].isdigit() else None
         assert len(_info) >= 4
         self._info = _info
@@ -160,10 +160,14 @@ class UltraSoundStimLog:
 
         stim_data = []
         for match in matches:
-            start_time = datetime.datetime.strptime(match[0], "%Y-%m-%d %H:%M:%S.%f")
+            start_time = datetime.datetime.strptime(
+                match[0].rsplit("+", maxsplit=1)[0], "%Y-%m-%d %H:%M:%S.%f"
+            )
             params = re.findall(param_pattern, match[1])
             params = {key: value for key, value in params}
-            end_time = datetime.datetime.strptime(match[2], "%Y-%m-%d %H:%M:%S.%f")
+            end_time = datetime.datetime.strptime(
+                match[2].rsplit("+", maxsplit=1)[0], "%Y-%m-%d %H:%M:%S.%f"
+            )
             stim_data.append([start_time, params, end_time])
 
         return stim_data
@@ -202,7 +206,7 @@ class StimulusInfo:
         self._stim_log = []
 
     def append(self, start: int, end: int) -> None:
-        self._stim_log.append([start, end])
+        self._stim_log.append((start, end))
         self._stim_log = list(set(self._stim_log))
         self._stim_log.sort()
 
@@ -221,28 +225,59 @@ class StimulusInfo:
                 raise ValueError("frameTimes must be provided.")
             _stim_log = UltraSoundStimLog(path).get_stim_frames_lst(frame_times)
             self._stim_log += _stim_log
-            self._stim_log = list(set(self._stim_log))
+            self._stim_log = list(set([tuple(elem) for elem in self._stim_log]))
         else:
             _stim_log = pd.read_csv(path)
             for _, row in _stim_log.iterrows():
-                self._stim_log.append(row[self.START_COLNAME], row[self.END_COLNAME])
+                self._stim_log.append((row[self.START_COLNAME], row[self.END_COLNAME]))
         self._stim_log.sort()
 
     def save(self, path: str) -> None:
-        os.makedirs(path, exist_ok=True)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
         _stim_log = np.array(self._stim_log)
         _stim_log = pd.DataFrame(
             _stim_log, columns=[self.START_COLNAME, self.END_COLNAME]
         )
         _stim_log.to_csv(path, index=False)
 
+    # @property
+    # def frames_idx(self) -> list[int]:
+    #     return [idx for start, end in self._stim_log for idx in range(start, end)]
+
     @property
     def frames_idx(self) -> list[int]:
-        return [idx for start, end in self._stim_log for idx in range(start, end)]
+        frames_idx_lst = []
+        for start, end in self._stim_log:
+            if start == end:
+                continue
+            if start == 0:
+                continue
+            frames_idx_lst.append([int(start), int(end)])
+        return frames_idx_lst
+
+    def get_baseline_idx(
+        self, duration: float, sampling_rate: float
+    ) -> list[list[int, int]]:
+        duration_frames = int(duration * sampling_rate)
+        baselind_idx_lst = []
+        for start, end in self._stim_log:
+            if start == end:
+                continue
+            if start == 0:
+                continue
+            if start - duration_frames <= 0:
+                baselind_idx_lst.append([0, start])
+            else:
+                baselind_idx_lst.append([int(start - duration_frames), int(start)])
+        return baselind_idx_lst
 
     @property
     def content(self) -> list[str]:
-        return [f"Start: {start}; End: {end}" for start, end in self._stim_log]
+        return [
+            f"Start: {start}; End: {end}"
+            for start, end in self._stim_log
+            if start != end
+        ]
 
 
 class BaselineInfo:

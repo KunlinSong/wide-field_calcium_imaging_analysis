@@ -1,7 +1,7 @@
 from .anchor import Anchor
 from .basic import Path
 from .data import BaselineInfo, CorrectedFrames, Frames, FrameTimes, StimulusInfo
-from .filter import LowPassFilter
+from .filter_tool import LowPassFilter
 from .image import (
     PaddingTransformer,
     PerspectiveTransformer,

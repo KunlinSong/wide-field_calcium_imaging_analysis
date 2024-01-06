@@ -159,6 +159,5 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-/Data/*
-!/Data/.gitkeep
-2023-09-11-17-11-40.txt.txt
+Data/
+2023-10-25-17-05-50.txt.txt

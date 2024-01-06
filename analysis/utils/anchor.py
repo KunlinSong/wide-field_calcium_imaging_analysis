@@ -25,8 +25,18 @@ class Anchor:
 
     def save(self, path: str) -> None:
         os.makedirs(os.path.dirname(path), exist_ok=True)
+        content = {k: list(v) for k, v in self.content.items()}
         with open(path, "w") as f:
-            yaml.dump(self.content, f)
+            yaml.dump(content, f, default_flow_style=False)
+
+    @property
+    def content(self) -> dict[str, tuple[int, int]]:
+        return {
+            self._OB_LEFT: self.ob_left,
+            self._OB_CENTER: self.ob_center,
+            self._OB_RIGHT: self.ob_right,
+            self._RSP_BASE: self.rsp_base,
+        }
 
     def load(self, path: str) -> None:
         with open(path, "r") as f:

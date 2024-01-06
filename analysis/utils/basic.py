@@ -170,7 +170,7 @@ class GenerateDirectory:
 
 
 class Path:
-    _NaN = "NaN"
+    _DEFAULT_FOLDERNAME = "NaN"
     _FRAMETIMES = "frameTimes.mat"
 
     def _get_file_number(self, path: str) -> Optional[int]:
@@ -184,7 +184,7 @@ class Path:
         _file_number = self._get_file_number(path)
         join_dirname = lambda filename: os.path.join(self._dirname, filename)
         if _file_number is None:
-            _generate_dirname = join_dirname(self._NaN)
+            _generate_dirname = join_dirname(self._DEFAULT_FOLDERNAME)
             self.frametimes_path = join_dirname(self._FRAMETIMES)
         else:
             _generate_dirname = join_dirname(f"{_file_number:04}")
